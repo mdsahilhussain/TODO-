@@ -4,16 +4,23 @@ export class Todo extends Component {
   constructor() {
     super();
     this.state = {
-      tasks: [{ task: "Gud Moring", id: 0 }],
+      tasks: [],
       currTask: "",
-      date:"",
-      time:"",
+      date: "",
+      time: "",
+      bool: "false",
     };
   }
+
   handleChange = (e) => {
     this.setState({
       currTask: e.target.value,
+      bool: "true",
     });
+  };
+
+  msg = (e) => {
+    alert("Enter your task");
   };
 
   handleSubmit = (e) => {
@@ -24,6 +31,12 @@ export class Todo extends Component {
       ],
       currTask: "",
     });
+    setTimeout(
+      this.setState({
+        bool: "false",
+      }),
+      1000
+    );
   };
 
   handleDelete = (id) => {
@@ -34,19 +47,16 @@ export class Todo extends Component {
       tasks: [...newArr],
     });
   };
-  
-
 
   render() {
     var currDate = new Date().toLocaleDateString();
     var currTime = new Date().toLocaleTimeString([], {
       timeStyle: "short",
     });
-   
+
     return (
       <div className="glassMorphism container">
-       
-       <h1 className="textOne">Hii,, M Sahil Hussain</h1>
+        <h1 className="textOne">Hii,, M Sahil Hussain</h1>
         <h5 className="textThree">Finish these work by tonight.</h5>
         <div
           className="flex items__center justify__between"
@@ -57,14 +67,21 @@ export class Todo extends Component {
             value={this.state.currTask}
             onChange={this.handleChange}
           />
-          <button onClick={this.handleSubmit} className="btn">
-            <i className="fa fa-plus"></i>
-          </button>
+          {this.state.bool === "true" ? (
+            <button onClick={this.handleSubmit} className="btn">
+              <i className="fa fa-plus"></i>
+            </button>
+          ) : (
+            <button onClick={this.msg} className="btn">
+              <i className="fa fa-plus"></i>
+            </button>
+          )}
         </div>
         <hr></hr>
         {this.state.tasks.map((taskObj) => {
           return (
-            <li key={taskObj.id}
+            <li
+              key={taskObj.id}
               style={{
                 listStyle: "none",
                 marginBottom: "18px",
@@ -83,7 +100,7 @@ export class Todo extends Component {
                   <i className="fa fa-trash"></i>
                 </button>
               </p>
-              <p className="textThree" style={{ marginTop: "-40px" }}>
+              <p className="textTime" style={{ marginTop: "-40px" }}>
                 {currTime}, {currDate}
               </p>
             </li>
